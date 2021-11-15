@@ -1,0 +1,85 @@
+{
+  "name": "react-pattern-playground",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@analytics/google-analytics": "^0.4.1",
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "@reduxjs/toolkit": "^1.6.2",
+    "@types/faker": "^5.5.9",
+    "@types/react": "^17.0.34",
+    "analytics": "^0.5.5",
+    "babel-preset-react-app": "^9.1.2",
+    "bootstrap": "^4.6.0",
+    "classnames": "^2.2.6",
+    "eslint": "^7.5.0",
+    "faker": "^5.5.3",
+    "install": "^0.13.0",
+    "lodash": "^4.17.21",
+    "memoize": "^0.1.1",
+    "node-fetch": "^3.1.0",
+    "node-sass": "^4.14.1",
+    "observable-hooks": "^4.0.3",
+    "react": "^16.14.0",
+    "react-bootstrap": "^1.5.2",
+    "react-dom": "^16.14.0",
+    "react-redux": "^7.2.6",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.3",
+    "redux-devtools-extension": "^2.13.9",
+    "rxjs": "^7.1.0",
+    "sass-loader": "^7.3.1",
+    "typescript": "4.4.4",
+    "utility-types": "^3.10.0"
+  },
+  "scripts": {
+    "story-book": "start-storybook -p 6001 -c .storybook",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:integration": "echo 'Integration tests not setup yet'",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true
+  },
+  "devDependencies": {
+    "@storybook/preset-create-react-app": "^2.1.2",
+    "@storybook/react": "^5.3.21",
+    "@types/classnames": "^2.2.11",
+    "@types/enzyme": "^3.10.8",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/jest": "24.0.18",
+    "@types/lodash": "^4.14.168",
+    "@types/node": "12.7.2",
+    "@types/react-dom": "16.9.0",
+    "@types/react-fontawesome": "^1.6.4",
+    "@types/react-router-dom": "^4.3.5",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "prettier": "^1.19.1",
+    "serverless": "^2.29.0",
+    "serverless-cloudformation-sub-variables": "^0.2.1",
+    "serverless-pseudo-parameters": "^2.5.0",
+    "serverless-s3-sync": "^1.16.1"
+  }
+}

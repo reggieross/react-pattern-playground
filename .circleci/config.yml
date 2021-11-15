@@ -1,0 +1,131 @@
+version: 2.1
+defaults: &defaults
+  working_directory: ~/repo
+  executor:
+    name: node/default
+
+orbs:
+  node: circleci/node@3.0.0
+  aws-cli: circleci/aws-cli@1.4.0
+
+jobs:
+  install_deps:
+    <<: *defaults
+    steps:
+      - checkout
+      - node/install-npm
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+
+  unit-test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run: npm run test
+
+  integration-test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run: npm run test:integration
+
+  deploy:
+    executor: aws-cli/default
+    parameters:
+      stage:
+        default: dev
+        type: string
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/repo
+      - aws-cli/setup:
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-region: AWS_REGION
+      - run: npm i --save-dev serverless-pseudo-parameters
+      - run: aws configure set region $AWS_DEFAULT_REGION --profile deployment
+      - run: aws configure set profile.deployment.role_arn "$DEPLOYMENT_ROLE_ARN"
+      - run: aws configure set profile.deployment.source_profile default
+      - run: npm run build
+      - run: npx serverless deploy --stage << parameters.stage >> --aws-profile deployment
+
+
+
+workflows:
+  version: 2
+
+  build_test_deploy-dev:
+    jobs:
+      - install_deps
+      - integration-test:
+          requires:
+            - install_deps
+      - unit-test:
+          requires:
+            - install_deps
+      - deploy:
+          stage: dev
+          context: org_ui
+          filters:
+            branches:
+              only:
+                - develop
+          requires:
+            - install_deps
+            - integration-test
+            - unit-test
+
+#  build_test_deploy-qa:
+#    jobs:
+#      - build
+#      - integration-test:
+#          requires:
+#            - build
+#      - unit-test:
+#          requires:
+#            - build
+#      - deploy:
+#          stage: qa
+#          context: org_ui
+#          filters:
+#            branches:
+#              only:
+#                - master
+#          requires:
+#            - build
+#            - integration-test
+#            - unit-test
+#
+#  build_test_deploy:
+#    jobs:
+#      - build
+#      - integration-test:
+#          requires:
+#            - build
+#      - unit-test:
+#          requires:
+#            - build
+#      - deploy_prod:
+#          stage: prod
+#          context: org_ui
+#          filters:
+#            branches:
+#              only:
+#                - master
+#          requires:
+#            - build
+#            - integration-test
+#            - unit-test

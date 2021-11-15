@@ -1,0 +1,14 @@
+$font: 'Arial';
+
+@mixin typography($fontSize) {
+  line-height: 14px;
+  letter-spacing: normal;
+  font-family: $font;
+  font-size: $fontSize;
+}
+
+@mixin headerTypography($fontSize) {
+  font-weight: bold;
+  font-family: $font;
+  font-size: $fontSize;
+}
